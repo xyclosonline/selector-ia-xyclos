@@ -570,19 +570,7 @@
       });
     }
     
-    
-    function copiar(texto, btn) {
-      navigator.clipboard.writeText(texto).then(() => {
-        btn.classList.add('copied');
-        btn.textContent = 'Copiado';
-        setTimeout(() => {
-          btn.classList.remove('copied');
-          btn.textContent = 'Copiar la pregunta';
-        }, 2200);
-      }).catch(err => {
-        console.error('Error:', err);
-      });
-    }
+  
     
     function reiniciar() {
       tarea = null;
