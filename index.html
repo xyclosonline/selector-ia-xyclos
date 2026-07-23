@@ -555,15 +555,16 @@
       `;
     }
     
-    function copiar(texto) {
+    function copiar(texto, btn) {
       navigator.clipboard.writeText(texto).then(() => {
-        const btn = event.target;
         btn.classList.add('copied');
         btn.textContent = 'Copiado';
         setTimeout(() => {
           btn.classList.remove('copied');
           btn.textContent = 'Copiar la pregunta';
         }, 2200);
+      }).catch(err => {
+        console.error('Error:', err);
       });
     }
     
