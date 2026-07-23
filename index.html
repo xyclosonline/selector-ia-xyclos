@@ -544,9 +544,9 @@
         <div class="prompt-section">
           <h4>Ahora hazlo sin esta app</h4>
           <p>Pregúntale directamente al modelo, dándole las tres variables. Copia esto y pégalo en tu IA.</p>
-          <div class="prompt-box">${prompt}</div>
+          <div class="prompt-box" id="prompt-text">${prompt}</div>
           <div class="button-group">
-            <button class="btn-primary" onclick="copiar('${prompt}', this)">Copiar la pregunta</button>
+            <button class="btn-primary" onclick="copiarTexto(this)">Copiar la pregunta</button>
             <button class="btn-secondary" onclick="reiniciar()">Empezar de nuevo</button>
           </div>
         </div>
@@ -554,6 +554,22 @@
         <p class="footer-note">Los nombres de modelos son referencias de julio de 2026 y van a cambiar. Las tres preguntas, no.</p>
       `;
     }
+    
+    function copiarTexto(btn) {
+      const texto = document.getElementById('prompt-text').textContent;
+      navigator.clipboard.writeText(texto).then(() => {
+        btn.classList.add('copied');
+        btn.textContent = 'Copiado';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.textContent = 'Copiar la pregunta';
+        }, 2200);
+      }).catch(err => {
+        console.error('Error:', err);
+        alert('No se pudo copiar. Cópialo manualmente.');
+      });
+    }
+    
     
     function copiar(texto, btn) {
       navigator.clipboard.writeText(texto).then(() => {
