@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Elige el modelo de IA perfecto para tu tarea. Selector interactivo basado en tarea, sensibilidad de datos y presupuesto.">
+  <meta name="theme-color" content="#0B1E3D">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Elegir Modelo IA">
+  
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230B1E3D' width='192' height='192'/><text x='50%' y='50%' font-size='80' fill='%2322C7E0' text-anchor='middle' dy='.3em' font-weight='bold' font-family='system-ui'>IA</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%230B1E3D' width='180' height='180'/><text x='50%' y='50%' font-size='72' fill='%2322C7E0' text-anchor='middle' dy='.3em' font-weight='bold' font-family='system-ui'>IA</text></svg>">
+  
+  <title>Elige tu modelo de IA | Xyclos Academy</title>
+  
+  <style>
+    :root {
+      --azul: #0B1E3D;
+      --azul-medio: #12305C;
+      --cian: #22C7E0;
+      --naranja: #F2762E;
+      --magenta: #D6338B;
+      --humo: #E8EDF4;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+      background: radial-gradient(1100px 620px at 12% -8%, var(--azul-medio) 0%, var(--azul) 58%);
+      color: var(--humo);
+      min-height: 100vh;
+      padding: clamp(24px, 5vw, 60px) clamp(18px, 5vw, 40px) 70px;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    
+    .header-label {
+      font-family: 'SF Mono', 'Monaco', monospace;
+      font-size: 11.5px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--naranja);
+      margin-bottom: 14px;
+    }
+    
+    h1 {
+      margin: 0 0 14px;
+      font-size: clamp(30px, 6vw, 50px);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+    }
+    
+    h1 .highlight {
+      color: var(--cian);
+    }
+    
+    .intro {
+      margin: 0 0 42px;
+      max-width: 560px;
+      font-size: clamp(15px, 2.1vw, 17px);
+      line-height: 1.6;
+      color: rgba(232, 237, 244, 0.72);
+    }
+    
+    .bloque {
+      margin-bottom: 34px;
+      opacity: 1;
+      transition: opacity 0.35s ease;
+    }
+    
+    .bloque.inactive {
+      opacity: 0.45;
+    }
+    
+    .bloque-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    
+    .numero {
+      font-family: 'SF Mono', 'Monaco', monospace;
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      color: var(--cian);
+      border-bottom: 1px solid var(--cian);
+      padding-bottom: 2px;
+      min-width: 32px;
+      font-weight: 600;
+    }
+    
+    .numero.inactive {
+      color: rgba(232, 237, 244, 0.45);
+      border-bottom-color: rgba(232, 237, 244, 0.2);
+    }
+    
+    .bloque h2 {
+      margin: 0;
+      font-size: clamp(17px, 2.4vw, 21px);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--humo);
+    }
+    
+    .opciones {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+      gap: 10px;
+    }
+    
+    .opcion {
+      text-align: left;
+      cursor: pointer;
+      padding: 13px 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(232, 237, 244, 0.16);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--humo);
+      font-family: inherit;
+      transition: border-color 0.18s ease, background 0.18s ease;
+      font-size: 15px;
+    }
+    
+    .opcion:hover {
+      border-color: rgba(232, 237, 244, 0.3);
+      background: rgba(232, 237, 244, 0.05);
+    }
+    
+    .opcion.selected {
+      border-color: var(--cian);
+      background: rgba(34, 199, 224, 0.13);
+    }
+    
+    .opcion-titulo {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+    
+    .opcion-detalle {
+      font-size: 12.5px;
+      line-height: 1.4;
+      color: rgba(232, 237, 244, 0.58);
+    }
+    
+    .resultado {
+      margin-top: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(34, 199, 224, 0.27);
+      background: rgba(255, 255, 255, 0.04);
+      padding: clamp(22px, 4vw, 32px);
+      border-left: 3px solid var(--cian);
+    }
+    
+    .resultado-titulo {
+      font-family: 'SF Mono', 'Monaco', monospace;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cian);
+      margin-bottom: 10px;
+    }
+    
+    .resultado h3 {
+      margin: 0 0 8px;
+      font-size: clamp(21px, 3.6vw, 28px);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      font-weight: 700;
+    }
+    
+    .resultado-modelo {
+      font-size: 14.5px;
+      color: var(--cian);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    
+    .resultado p {
+      margin: 0 0 18px;
+      font-size: 15.5px;
+      line-height: 1.66;
+      color: rgba(232, 237, 244, 0.88);
+    }
+    
+    .resultado-alternativa {
+      padding-top: 16px;
+      border-top: 1px solid rgba(232, 237, 244, 0.12);
+      font-size: 14.5px;
+      line-height: 1.62;
+      color: rgba(232, 237, 244, 0.66);
+    }
+    
+    .placeholder {
+      margin-top: 40px;
+      padding: 22px 24px;
+      border-radius: 12px;
+      border: 1px dashed rgba(232, 237, 244, 0.2);
+      font-size: 14.5px;
+      color: rgba(232, 237, 244, 0.5);
+      line-height: 1.6;
+    }
+    
+    .prompt-section {
+      margin-top: 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(232, 237, 244, 0.14);
+      padding: clamp(20px, 4vw, 28px);
+    }
+    
+    .prompt-section h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+    }
+    
+    .prompt-section p {
+      margin: 0 0 16px;
+      font-size: 14.5px;
+      line-height: 1.6;
+      color: rgba(232, 237, 244, 0.66);
+    }
+    
+    .prompt-box {
+      background: rgba(0, 0, 0, 0.28);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 13.8px;
+      line-height: 1.62;
+      font-family: 'SF Mono', 'Monaco', monospace;
+      color: rgba(232, 237, 244, 0.9);
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-bottom: 14px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      cursor: pointer;
+      padding: 11px 20px;
+      border-radius: 9px;
+      font-weight: 650;
+      font-size: 14.5px;
+      font-family: inherit;
+      border: none;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+      background: var(--cian);
+      color: var(--azul);
+    }
+    
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+    
+    .btn-primary.copied {
+      background: rgba(34, 199, 224, 0.2);
+      color: var(--cian);
+    }
+    
+    .btn-secondary {
+      background: transparent;
+      color: rgba(232, 237, 244, 0.8);
+      border: 1px solid rgba(232, 237, 244, 0.24);
+    }
+    
+    .btn-secondary:hover {
+      border-color: rgba(232, 237, 244, 0.4);
+    }
+    
+    .footer-note {
+      margin-top: 22px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(232, 237, 244, 0.42);
+    }
+    
+    @media (max-width: 640px) {
+      .opciones {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-label">Xyclos Academy</div>
+    <h1>¿Qué modelo de IA<br>uso para <span class="highlight">esto</span>?</h1>
+    <p class="intro">Tres preguntas. La respuesta no es un nombre de modelo, es el criterio para elegirlo cuando salga el siguiente.</p>
+    
+    <div id="bloque1" class="bloque">
+      <div class="bloque-header">
+        <span class="numero">01</span>
+        <h2>¿Qué vas a hacer?</h2>
+      </div>
+      <div class="opciones" id="opciones1"></div>
+    </div>
+    
+    <div id="bloque2" class="bloque inactive">
+      <div class="bloque-header">
+        <span class="numero inactive">02</span>
+        <h2>¿Qué tan sensible es la información?</h2>
+      </div>
+      <div class="opciones" id="opciones2"></div>
+    </div>
+    
+    <div id="bloque3" class="bloque inactive">
+      <div class="bloque-header">
+        <span class="numero inactive">03</span>
+        <h2>¿Cuánto puedes gastar?</h2>
+      </div>
+      <div class="opciones" id="opciones3"></div>
+    </div>
+    
+    <div id="resultado-container"></div>
+  </div>
+  
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').catch(() => {});
+    }
+    
+    const TAREAS = [
+      { id: "escribir", label: "Escribir o redactar", detalle: "Correos, cartas, informes, contenido" },
+      { id: "hoja", label: "Analizar una hoja de cálculo", detalle: "Datos, cifras, tablas, reportes" },
+      { id: "codigo", label: "Programar o desarrollar", detalle: "Aplicaciones, scripts, depuración" },
+      { id: "investigar", label: "Investigar un tema", detalle: "Buscar, comparar, sintetizar fuentes" },
+      { id: "resumir", label: "Resumir documentos largos", detalle: "Contratos, manuales, actas" },
+      { id: "traducir", label: "Traducir o corregir", detalle: "Idiomas, ortografía, estilo" },
+      { id: "presentar", label: "Preparar una presentación", detalle: "Estructura, guion, mensajes clave" },
+      { id: "volumen", label: "Procesar muchos elementos", detalle: "Clasificar tickets, etiquetar, repetir" },
+    ];
+    
+    const DATOS = [
+      { id: "publico", label: "Información pública", detalle: "No hay problema si sale de la empresa" },
+      { id: "interno", label: "Información interna", detalle: "Preferiría que no circule, sin ser crítica" },
+      { id: "sensible", label: "Información sensible o regulada", detalle: "Datos de clientes, salud, finanzas, legal" },
+    ];
+    
+    const PRESUPUESTO = [
+      { id: "ajustado", label: "Ajustado", detalle: "Cada token cuenta" },
+      { id: "equilibrado", label: "Equilibrado", detalle: "Pago por lo que vale la pena" },
+      { id: "resultado", label: "Lo que haga falta", detalle: "Prioridad al resultado" },
+    ];
+    
+    const RECOMENDACIONES = {
+      "sensible": {
+        titulo: "Modelo abierto en infraestructura propia",
+        ejemplos: "Kimi K3, DeepSeek, Mistral, Rakuten AI 3.0, Latam-GPT",
+        razon: "Con datos regulados la pregunta deja de ser cuál modelo es más inteligente y pasa a ser dónde viven tus datos. Los modelos de pesos abiertos se pueden desplegar en tu propia infraestructura, así la información nunca sale de tu control. Mistral y los proveedores japoneses ofrecen además despliegue con residencia de datos en su región.",
+        alternativa: "Si no tienes infraestructura propia, revisa qué modelo comercial ofrece un contrato con garantía de no entrenamiento sobre tus datos y residencia en tu jurisdicción.",
+        nivel: "soberania",
+      },
+      "escribir_1_resultado": {
+        titulo: "Modelo intermedio, sin excederse",
+        ejemplos: "GPT-5.6 Terra, Claude Sonnet",
+        razon: "Esta tarea no necesita razonamiento profundo. Pagar por un modelo insignia para redactar un correo o traducir un párrafo es como usar un camión para llevar una carta. La diferencia de calidad será mínima y la de costo, enorme: en la familia GPT-5.6 el modelo económico cuesta cinco veces menos que el insignia.",
+        alternativa: "Aun así, prueba primero con el modelo económico. Si el resultado te sirve, ahí quedó resuelto.",
+        nivel: "economico",
+      },
+      "escribir_0_ajustado": {
+        titulo: "El modelo más económico disponible",
+        ejemplos: "GPT-5.6 Luna, Claude Haiku, o cualquier modelo abierto pequeño",
+        razon: "Esta tarea no necesita razonamiento profundo. Pagar por un modelo insignia para redactar un correo o traducir un párrafo es como usar un camión para llevar una carta. La diferencia de calidad será mínima y la de costo, enorme: en la familia GPT-5.6 el modelo económico cuesta cinco veces menos que el insignia.",
+        alternativa: "Si el resultado se queda corto dos veces seguidas, sube un nivel. No antes.",
+        nivel: "economico",
+      },
+      "hoja_0_ajustado": {
+        titulo: "Modelo económico primero, intermedio si falla",
+        ejemplos: "Empieza en GPT-5.6 Luna o Claude Haiku, escala a Terra o Sonnet",
+        razon: "Es una tarea de complejidad media: puede resolverse con un modelo económico o puede necesitar más criterio, y no se sabe hasta intentarlo. Con presupuesto ajustado la estrategia correcta es empezar abajo y subir solo cuando el resultado no alcance.",
+        alternativa: "Los modelos abiertos como Kimi K3 son fuertes en este rango y cuestan una fracción de los propietarios. Vale la pena tenerlos en el radar.",
+        nivel: "escalado",
+      },
+      "hoja_1_equilibrado": {
+        titulo: "Modelo intermedio",
+        ejemplos: "GPT-5.6 Terra, Claude Sonnet",
+        razon: "Aquí sí hace falta criterio: interpretar datos, comparar fuentes, estructurar un argumento. El modelo intermedio está diseñado exactamente para el trabajo cotidiano que exige algo más que ejecutar una instrucción, sin el costo del modelo insignia.",
+        alternativa: "Si la tarea se vuelve larga o encadena muchos pasos, considera subir al modelo insignia solo para esa parte y volver a bajar después.",
+        nivel: "intermedio",
+      },
+      "codigo_0_ajustado": {
+        titulo: "Modelo insignia, pero solo donde duele",
+        ejemplos: "Claude Opus, GPT-5.6 Sol, o Kimi K3 como alternativa abierta",
+        razon: "Programar es la tarea donde más se nota la diferencia entre modelos, y también donde más tokens se consumen. Con presupuesto ajustado la salida no es renunciar al modelo capaz, es usarlo con puntería: el modelo fuerte para diseñar la solución y depurar lo difícil, uno económico para el trabajo repetitivo alrededor.",
+        alternativa: "Kimi K3 se posiciona justo en este rango a un costo mucho menor, y sus pesos son abiertos. Si el presupuesto es la restricción principal, ahí hay una opción real.",
+        nivel: "mixto",
+      },
+      "codigo_2_resultado": {
+        titulo: "Modelo insignia",
+        ejemplos: "Claude Opus o Fable, GPT-5.6 Sol",
+        razon: "El desarrollo de software es el terreno donde la capacidad del modelo se traduce directamente en horas ahorradas. Un modelo que entiende tu arquitectura a la primera vale lo que cuesta. Es también donde los proveedores compiten más fuerte, así que conviene revisar los rankings cada pocas semanas.",
+        alternativa: "Ojo con el límite de sesión: los modelos más capaces consumen tokens rápido y puedes quedarte sin cuota a media jornada. Reserva el modelo fuerte para lo difícil.",
+        nivel: "insignia",
+      },
+    };
+    
+    let tarea = null;
+    let datos = null;
+    let presupuesto = null;
+    
+    function renderizarOpciones() {
+      const c1 = document.getElementById('opciones1');
+      const c2 = document.getElementById('opciones2');
+      const c3 = document.getElementById('opciones3');
+      
+      c1.innerHTML = TAREAS.map(t => `
+        <button class="opcion ${tarea === t.id ? 'selected' : ''}" onclick="seleccionar('tarea', '${t.id}')">
+          <div class="opcion-titulo">${t.label}</div>
+          <div class="opcion-detalle">${t.detalle}</div>
+        </button>
+      `).join('');
+      
+      c2.innerHTML = DATOS.map(d => `
+        <button class="opcion ${datos === d.id ? 'selected' : ''}" onclick="seleccionar('datos', '${d.id}')">
+          <div class="opcion-titulo">${d.label}</div>
+          <div class="opcion-detalle">${d.detalle}</div>
+        </button>
+      `).join('');
+      
+      c3.innerHTML = PRESUPUESTO.map(p => `
+        <button class="opcion ${presupuesto === p.id ? 'selected' : ''}" onclick="seleccionar('presupuesto', '${p.id}')">
+          <div class="opcion-titulo">${p.label}</div>
+          <div class="opcion-detalle">${p.detalle}</div>
+        </button>
+      `).join('');
+      
+      actualizar();
+    }
+    
+    function seleccionar(tipo, id) {
+      if (tipo === 'tarea') {
+        tarea = tarea === id ? null : id;
+      } else if (tipo === 'datos') {
+        datos = datos === id ? null : id;
+      } else if (tipo === 'presupuesto') {
+        presupuesto = presupuesto === id ? null : id;
+      }
+      renderizarOpciones();
+    }
+    
+    function actualizar() {
+      const b2 = document.getElementById('bloque2');
+      const b3 = document.getElementById('bloque3');
+      const n2 = document.querySelector('#bloque2 .numero');
+      const n3 = document.querySelector('#bloque3 .numero');
+      
+      if (tarea) {
+        b2.classList.remove('inactive');
+        n2.classList.remove('inactive');
+      } else {
+        b2.classList.add('inactive');
+        n2.classList.add('inactive');
+      }
+      
+      if (datos) {
+        b3.classList.remove('inactive');
+        n3.classList.remove('inactive');
+      } else {
+        b3.classList.add('inactive');
+        n3.classList.add('inactive');
+      }
+      
+      if (tarea && datos && presupuesto) {
+        mostrarResultado();
+      } else {
+        document.getElementById('resultado-container').innerHTML = `<div class="placeholder">Responde las tres preguntas y aquí aparece la recomendación.</div>`;
+      }
+    }
+    
+    function obtenerRecomendacion() {
+      if (datos === 'sensible') return RECOMENDACIONES['sensible'];
+      
+      const key = `${tarea}_${PRESUPUESTO.findIndex(p => p.id === presupuesto)}_${presupuesto}`;
+      if (RECOMENDACIONES[key]) return RECOMENDACIONES[key];
+      
+      const tareaIdx = TAREAS.findIndex(t => t.id === tarea);
+      if (tareaIdx <= 1) {
+        return presupuesto === 'resultado' 
+          ? RECOMENDACIONES['escribir_1_resultado']
+          : RECOMENDACIONES['escribir_0_ajustado'];
+      }
+      if (tareaIdx === 2) {
+        return presupuesto === 'ajustado'
+          ? RECOMENDACIONES['codigo_0_ajustado']
+          : RECOMENDACIONES['codigo_2_resultado'];
+      }
+      return {
+        titulo: "Modelo equilibrado",
+        ejemplos: "GPT-5.6 Terra, Claude Sonnet",
+        razon: "Una tarea de complejidad media requiere un modelo con buen balance entre capacidad y costo.",
+        alternativa: "Prueba y ajusta según los resultados.",
+        nivel: "intermedio",
+      };
+    }
+    
+    function mostrarResultado() {
+      const rec = obtenerRecomendacion();
+      const prompt = `Necesito ${TAREAS.find(t => t.id === tarea).label.toLowerCase()}. La información que voy a manejar es: ${DATOS.find(d => d.id === datos).label.toLowerCase()}. Mi prioridad de costo es: ${PRESUPUESTO.find(p => p.id === presupuesto).label.toLowerCase()}.
+
+¿Qué modelo me recomiendas para esto, y por qué? Si hay una opción más económica que resuelva igual de bien, dímela. Y si crees que otro proveedor lo hace mejor que tú para este caso, dímelo también.`;
+      
+      const colores = {
+        soberania: '#D6338B',
+        economico: '#22C7E0',
+        escalado: '#22C7E0',
+        intermedio: '#F2762E',
+        mixto: '#F2762E',
+        insignia: '#D6338B',
+      };
+      
+      document.getElementById('resultado-container').innerHTML = `
+        <div class="resultado" style="border-left-color: ${colores[rec.nivel]}">
+          <div class="resultado-titulo" style="color: ${colores[rec.nivel]}">Recomendación</div>
+          <h3>${rec.titulo}</h3>
+          <div class="resultado-modelo">${rec.ejemplos}</div>
+          <p>${rec.razon}</p>
+          <div class="resultado-alternativa">${rec.alternativa}</div>
+        </div>
+        
+        <div class="prompt-section">
+          <h4>Ahora hazlo sin esta app</h4>
+          <p>Pregúntale directamente al modelo, dándole las tres variables. Copia esto y pégalo en tu IA.</p>
+          <div class="prompt-box">${prompt}</div>
+          <div class="button-group">
+            <button class="btn-primary" onclick="copiar('${prompt}')">Copiar la pregunta</button>
+            <button class="btn-secondary" onclick="reiniciar()">Empezar de nuevo</button>
+          </div>
+        </div>
+        
+        <p class="footer-note">Los nombres de modelos son referencias de julio de 2026 y van a cambiar. Las tres preguntas, no.</p>
+      `;
+    }
+    
+    function copiar(texto) {
+      navigator.clipboard.writeText(texto).then(() => {
+        const btn = event.target;
+        btn.classList.add('copied');
+        btn.textContent = 'Copiado';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.textContent = 'Copiar la pregunta';
+        }, 2200);
+      });
+    }
+    
+    function reiniciar() {
+      tarea = null;
+      datos = null;
+      presupuesto = null;
+      renderizarOpciones();
+    }
+    
+    renderizarOpciones();
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{
+  "name": "Elegir Modelo de IA - Xyclos Academy",
+  "short_name": "Modelo IA",
+  "description": "Selector interactivo para elegir el modelo de IA perfecto según tu tarea, sensibilidad de datos y presupuesto",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1E3D",
+  "theme_color": "#0B1E3D",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230B1E3D' width='192' height='192'/><text x='50%' y='50%' font-size='80' fill='%2322C7E0' text-anchor='middle' dy='.3em' font-weight='bold' font-family='system-ui'>IA</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%230B1E3D' width='512' height='512'/><text x='50%' y='50%' font-size='240' fill='%2322C7E0' text-anchor='middle' dy='.3em' font-weight='bold' font-family='system-ui'>IA</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%230B1E3D' width='180' height='180' rx='40'/><text x='50%' y='50%' font-size='72' fill='%2322C7E0' text-anchor='middle' dy='.3em' font-weight='bold' font-family='system-ui'>IA</text></svg>",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["productivity", "education"],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%230B1E3D' width='540' height='720'/><text x='50%' y='60' font-size='32' fill='%2322C7E0' text-anchor='middle' font-weight='bold'>Elegir Modelo IA</text><text x='50%' y='150' font-size='18' fill='%23E8EDF4' text-anchor='middle' text-anchor='middle'>3 preguntas para elegir</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Selector de Modelo",
+      "short_name": "Elegir IA",
+      "description": "Abre el selector para elegir tu modelo",
+      "url": "/?mode=selector",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230B1E3D' width='192' height='192'/><text x='50%' y='50%' font-size='80' fill='%2322C7E0' text-anchor='middle' dy='.3em' font-weight='bold' font-family='system-ui'>IA</text></svg>",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
+}
